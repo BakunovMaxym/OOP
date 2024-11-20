@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            font-size: 26px;
+            background-color: dimgray;
+            color: rgb(215, 215, 215);
+        }
+
+        h1 {
+            color: azure;
+        }
+
+        p {
+            color: red;
+            text-shadow: 1px -1px 2px white;
+        }
+
+        ul {
+            list-style: none;
+            max-width: 400px;
+        }
+
+        .productName {
+            font-weight: 700;
+            font-size: 1.5em;
+            border-radius: 10px;
+            padding-left: 10px;
+        }
+
+        .productName:hover {
+            background-color: rgb(133, 133, 133);
+            color: azure;
+            cursor: pointer;
+        }
+
+        .productDescription,
+        .productPrice {
+            display: none;
+        }
+
+        .active.productDescription,
+        .active.productPrice {
+            padding-left: 35px;
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Home page</h1>
+    <div th:if="${items != null and items.size() == 0}">
+        <p>There are no products</p>
+    </div>
+    <ul id="prodList" th:if="${items != null and items.size() > 0}">
+        <li th:each="item : ${items}">
+            <div class="productName" th:text="${item.name}"></div>
+            <div class="productDescription" th:text="${item.description}"></div>
+            <div class="productPrice" th:text="${item.price}"></div>
+        </li>
+    </ul>
+    <script>
+        const prodList = document.getElementById('prodList');
+
+        prodList.addEventListener('click', function (event) {
+            if (event.target.classList.contains('productName')) {
+                const parentLi = event.target.parentElement;
+
+                const items = prodList.querySelectorAll('li');
+                items.forEach(item => {
+                    item.querySelector('.productDescription').classList.remove('active');
+                    item.querySelector('.productPrice').classList.remove('active');
+                });
+
+                parentLi.querySelector('.productDescription').classList.add('active');
+                parentLi.querySelector('.productPrice').classList.add('active');
+            }
+        });
+
+    </script>
+</body>
+
+</html>
