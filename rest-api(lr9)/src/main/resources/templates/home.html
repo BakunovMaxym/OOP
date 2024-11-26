@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            font-size: 26px;
+            background-color: rgb(225, 225, 225);
+            color: rgb(0, 0, 0);
+        }
+
+        h1 {
+            color: rgb(68, 0, 97);
+        }
+
+        h2{
+            border-top: 2px solid black;
+        }
+        p {
+            color: rgb(45, 45, 45);
+            text-shadow: 1px -1px 2px white;
+        }
+
+        ul {
+            list-style: none;
+            max-width: 400px;
+        }
+
+        .productName {
+            font-weight: 700;
+            font-size: 1.5em;
+            border-radius: 10px;
+            padding-left: 10px;
+        }
+
+        .productName:hover {
+            background-color: rgb(133, 133, 133);
+            color: azure;
+            cursor: pointer;
+        }
+
+        .productDescription,
+        .productPrice {
+            display: none;
+        }
+
+        .active.productDescription,
+        .active.productPrice {
+            padding-left: 35px;
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Timetable</h1>
+    <div id="contentBlock"></div>
+    <script>
+        const fetchData = async () => {
+            try{
+                const res = await fetch("http://localhost:8080/days");
+
+                const data = await res.json();
+
+                console.log(data);
+                
+                data.map(day => {
+                    const dayName = document.createElement("h2");
+                    const dayNametext = document.createTextNode(day.name);
+                    dayName.appendChild(dayNametext);
+                    contentBlock.appendChild(dayName);
+                    if(day.firstSubj !== null){
+                        const firstSubj = document.createElement("p");
+                        const firstSubjtext = document.createTextNode(day.firstSubj);
+                        firstSubj.appendChild(firstSubjtext);
+                        contentBlock.appendChild(firstSubj);
+                    }
+                    if(day.secondSubj !== null){
+                        const secondSubj = document.createElement("p");
+                        const secondSubjText = document.createTextNode(day.secondSubj);
+                        secondSubj.appendChild(secondSubjText);
+                        contentBlock.appendChild(secondSubj);
+                    }
+                    if(day.thirdSubj !== null){
+                        const thirdSubj = document.createElement("p");
+                        const thirdSubjText = document.createTextNode(day.thirdSubj);
+                        thirdSubj.appendChild(thirdSubjText);
+                        contentBlock.appendChild(thirdSubj);
+                    }
+                    if(day.fourthSubj !== null){
+                        const fourthSubj = document.createElement("p");
+                        const fourthSubjText = document.createTextNode(day.fourthSubj);
+                        fourthSubj.appendChild(fourthSubjText);
+                        contentBlock.appendChild(fourthSubj);
+                    }
+                });
+
+            } catch (error){
+                console.log(error)
+            }
+        }
+        fetchData();
+
+        const contentBlock = document.getElementById('contentBlock');
+
+
+    </script>
+</body>
+
+</html>
