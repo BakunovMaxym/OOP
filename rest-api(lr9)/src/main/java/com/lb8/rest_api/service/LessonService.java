@@ -1,6 +1,5 @@
 package com.lb8.rest_api.service;
 
-import java.sql.Statement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -14,7 +13,7 @@ import org.springframework.stereotype.Service;
 import com.lb8.rest_api.persistence.models.Lesson;
 
 @Service
-public class LessonService implements DBaccessService<Lesson> {
+public class LessonService extends DBaccessService<Lesson> {
 
     private final String url = "jdbc:sqlite:lessonsDB.db";
 
@@ -27,24 +26,20 @@ public class LessonService implements DBaccessService<Lesson> {
     }
 
     @Override
-public void create(Lesson lesson) {
-    // Не використовуємо PreparedStatement, вставляємо значення безпосередньо в запит
-    String query = "INSERT INTO lessons(name, teacher, time) VALUES('" 
-                   + lesson.getName() + "', '" 
-                   + lesson.getTeacher() + "', '" 
-                   + lesson.getTime() + "');";
+    public void create(Lesson lesson) {
+        String query = "INSERT INTO lessons(name, teacher, time) VALUES(?,?,?)";
+        try (Connection connection = DriverManager.getConnection(url);
+             PreparedStatement statement = connection.prepareStatement(query)) {
 
-    try (Connection connection = DriverManager.getConnection(url);
-         Statement statement = connection.createStatement()) {
+            statement.setString(1, lesson.getName());
+            statement.setString(2, lesson.getTeacher());
+            statement.setTime(3, java.sql.Time.valueOf(lesson.getTime()));
 
-        // Виконуємо SQL-запит
-        statement.executeUpdate(query);
-        System.err.println("Lesson created successfully");
-
-    } catch (SQLException e) {
-        e.printStackTrace();
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
-}
 
     @Override
     public List<Lesson> readAll() {

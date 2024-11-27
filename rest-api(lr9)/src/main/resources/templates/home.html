@@ -13,17 +13,36 @@
         }
 
         h1 {
+            text-align: center;
             color: rgb(68, 0, 97);
         }
 
-        h2{
-            border-top: 2px solid black;
+        h2 {
+            border-bottom: 2px solid black;
+            text-align: center;
         }
+
+        #contentBlock {
+            display: flex;
+            flex-direction: row;
+            /* justify-content: space-around; */
+        }
+        
+        #contentBlock div{
+            border-left: 2px solid black;
+            width: 20%;
+        }
+        
         p {
             color: rgb(45, 45, 45);
             text-shadow: 1px -1px 2px white;
+            height: 30px;
+            margin: 15px 20px 15px 20px;
         }
 
+        .empty{
+            background-color: rgb(211, 255, 211);
+        }
         ul {
             list-style: none;
             max-width: 400px;
@@ -58,50 +77,36 @@
 <body>
     <h1>Timetable</h1>
     <div id="contentBlock"></div>
+
     <script>
         const fetchData = async () => {
-            try{
+            try {
                 const res = await fetch("http://localhost:8080/days");
-
                 const data = await res.json();
 
                 console.log(data);
-                
-                data.map(day => {
-                    const dayName = document.createElement("h2");
-                    const dayNametext = document.createTextNode(day.name);
-                    dayName.appendChild(dayNametext);
-                    contentBlock.appendChild(dayName);
-                    if(day.firstSubj !== null){
-                        const firstSubj = document.createElement("p");
-                        const firstSubjtext = document.createTextNode(day.firstSubj);
-                        firstSubj.appendChild(firstSubjtext);
-                        contentBlock.appendChild(firstSubj);
-                    }
-                    if(day.secondSubj !== null){
-                        const secondSubj = document.createElement("p");
-                        const secondSubjText = document.createTextNode(day.secondSubj);
-                        secondSubj.appendChild(secondSubjText);
-                        contentBlock.appendChild(secondSubj);
-                    }
-                    if(day.thirdSubj !== null){
-                        const thirdSubj = document.createElement("p");
-                        const thirdSubjText = document.createTextNode(day.thirdSubj);
-                        thirdSubj.appendChild(thirdSubjText);
-                        contentBlock.appendChild(thirdSubj);
-                    }
-                    if(day.fourthSubj !== null){
-                        const fourthSubj = document.createElement("p");
-                        const fourthSubjText = document.createTextNode(day.fourthSubj);
-                        fourthSubj.appendChild(fourthSubjText);
-                        contentBlock.appendChild(fourthSubj);
-                    }
-                });
 
-            } catch (error){
-                console.log(error)
+                data.map(day => {
+                    const dayBlock = document.createElement("div");
+                    const dayName = document.createElement("h2");
+                    dayName.textContent = day.name;
+                    dayBlock.appendChild(dayName);
+
+                    const subjects = [day.firstSubj, day.secondSubj, day.thirdSubj, day.fourthSubj];
+
+                    subjects.map((subject, index) => {
+                        const subjectElement = document.createElement("p");
+                            subjectElement.textContent = subject ? (subject) : " ";
+                            !subject ? subjectElement.classList.add("empty") : "" ;
+                            dayBlock.appendChild(subjectElement);
+                    });
+                    contentBlock.appendChild(dayBlock);
+                });
+            } catch (error) {
+                console.log(error);
             }
-        }
+        };
+
         fetchData();
 
         const contentBlock = document.getElementById('contentBlock');

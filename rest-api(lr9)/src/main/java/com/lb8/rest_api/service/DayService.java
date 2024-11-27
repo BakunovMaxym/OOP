@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import com.lb8.rest_api.persistence.models.Day;
 
 @Service
-public class DayService implements DBaccessService<Day> {
+public class DayService extends DBaccessService<Day> {
 
     private final String url = "jdbc:sqlite:lessonsDB.db";
 

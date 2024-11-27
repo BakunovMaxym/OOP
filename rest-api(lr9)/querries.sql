@@ -1,12 +1,12 @@
--- CREATE TABLE lessons (
---     id INTEGER PRIMARY KEY AUTOINCREMENT,
---     name VARCHAR(255) NOT NULL,
---     teacher VARCHAR(255) NOT NULL,
---     time TIME NOT NULL
--- );
+CREATE TABLE lessons (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name VARCHAR(255) NOT NULL,
+    teacher VARCHAR(255) NOT NULL,
+    time TIME NOT NULL
+);
 
--- insert into lessons(name, teacher, time)
--- values ("4ипа9и45", "гггггг", "12:37:12");
+insert into lessons(name, teacher, time)
+values ("someSubject", "somePeople", "12:37:12");
 
 SELECT * FROM lessons 
 
@@ -25,7 +25,7 @@ CREATE TABLE days (
 );
 
 insert into days(name, firstSubj, secondSubj, thirdSubj, fourthSubj)
-values ("ser", "8", "5", "4", Null);
+values ("wednesday", "8", "5", "4", Null);
 
 -- SELECT * FROM days
 
